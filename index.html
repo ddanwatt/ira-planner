@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Will My IRA Last?</title>
+<meta name="description" content="How long will your money last? Enter your balance, rate and monthly withdrawal and see month by month. Your numbers stay on your device.">
+<meta property="og:title" content="Will My IRA Last?">
+<meta property="og:description" content="How long will your money last? Your numbers stay on your device.">
+<meta name="theme-color" content="#14402f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IRA Planner">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <h1>Will My IRA Last?</h1>
+  <p class="sub">How long will your money last? Fill in the yellow boxes and find out.</p>
+</header>
+
+<main class="layout">
+ <div class="col col-left">
+  <section class="card inputs" aria-labelledby="in-h">
+    <div class="card-head">
+      <h2 id="in-h">Your numbers</h2>
+      <button type="button" id="clear" class="btn ghost">Clear</button>
+    </div>
+
+    <div class="field">
+      <label for="in-amount">IRA / 401K amount</label>
+      <div class="inrow"><span class="pre">$</span><input id="in-amount" data-key="amount" data-money="1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="next" placeholder="e.g. 500,000"></div>
+    </div>
+    <div class="field">
+      <label for="in-apr">Initial APR <span class="hint">yearly return, %</span></label>
+      <div class="inrow"><input id="in-apr" data-key="apr" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="next" placeholder="e.g. 5"><span class="unit">%</span></div>
+    </div>
+    <div class="field">
+      <label for="in-years">Years to withdraw <span class="hint">max 30</span></label>
+      <div class="inrow"><input id="in-years" data-key="years" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="next" placeholder="e.g. 25"><span class="unit">years</span></div>
+    </div>
+    <div class="field">
+      <label for="in-monthly">Amount you draw each month <span class="hint">optional</span></label>
+      <div class="inrow"><span class="pre">$</span><input id="in-monthly" data-key="monthly" data-money="1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="next" placeholder="e.g. 2,500"></div>
+      <p class="note small">Leave blank to see the most you can take. Fills every month; change single months in the monthly detail below.</p>
+    </div>
+
+    <fieldset class="field group">
+      <legend>1st draw date</legend>
+      <div class="trio">
+        <div><label for="in-drawMonth" class="mini-l">Month</label><input id="in-drawMonth" data-key="drawMonth" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="next" placeholder="1–12"></div>
+        <div><label for="in-drawDay" class="mini-l">Day</label><input id="in-drawDay" data-key="drawDay" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="next" placeholder="1–31"></div>
+        <div><label for="in-drawYear" class="mini-l">Year</label><input id="in-drawYear" data-key="drawYear" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="next" placeholder="yyyy"></div>
+      </div>
+    </fieldset>
+    <fieldset class="field group">
+      <legend>Born</legend>
+      <div class="duo">
+        <div><label for="in-birthMonth" class="mini-l">Month</label><input id="in-birthMonth" data-key="birthMonth" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="next" placeholder="1–12"></div>
+        <div><label for="in-birthYear" class="mini-l">Year</label><input id="in-birthYear" data-key="birthYear" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="done" placeholder="yyyy"></div>
+      </div>
+    </fieldset>
+    <p class="note privacy">Your numbers are saved only on this device. Nothing is sent anywhere.</p>
+  </section>
+ </div>
+
+ <div class="col col-right">
+  <section class="card results" aria-labelledby="res-h" aria-live="polite">
+    <h2 id="res-h" class="vh">Result</h2>
+    <div id="waiting" class="waiting">
+      <p class="w-title">Fill in the yellow boxes to see how long your money lasts.</p>
+      <p id="missing" class="w-list"></p>
+    </div>
+    <div id="ready" hidden>
+      <div id="verdict" class="verdict">
+        <p id="v-word" class="v-word"></p>
+        <p id="v-why" class="v-why"></p>
+      </div>
+      <dl class="stats">
+        <div><dt>Max monthly withdrawal</dt><dd id="o-max"></dd><span class="sd" id="o-max-note"></span></div>
+        <div><dt>Annual withdrawal <span class="hint">max × 12</span></dt><dd id="o-annual"></dd></div>
+        <div><dt id="o-end-label">Balance at the end</dt><dd id="o-end"></dd></div>
+        <div><dt>Total interest earned</dt><dd id="o-int"></dd></div>
+        <div><dt>Total principal withdrawn</dt><dd id="o-prin"></dd></div>
+        <div><dt>Total of your withdrawals</dt><dd id="o-tot"></dd></div>
+        <div><dt>Over / under max <span class="hint">first 15 years</span></dt><dd id="o-ou"></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="card chartcard" id="chartcard" hidden aria-labelledby="chart-h">
+    <h2 id="chart-h">Balance over time</h2>
+    <div id="chart" class="chart"></div>
+  </section>
+ </div>
+
+ <section class="card wide" id="yearcard" hidden aria-labelledby="yr-h">
+   <h2 id="yr-h">Year by year</h2>
+   <div class="tablewrap"><table class="tbl" id="yearly">
+     <thead><tr><th class="l">Year</th><th>Age</th><th>Withdrawn</th><th>Interest</th><th>Principal</th><th>End balance</th></tr></thead>
+     <tbody></tbody>
+   </table></div>
+ </section>
+
+ <section class="card wide" id="monthcard" hidden>
+   <details id="monthly-details">
+     <summary><h2>Monthly detail</h2><span class="hint">change the rate or amount for any month</span></summary>
+     <p class="note">The Initial APR is used every month unless you put a new APR in that month's green box. Leave a month's amount blank and the sheet assumes you take that month's maximum.</p>
+     <div class="tablewrap tall"><table class="tbl monthly" id="monthly">
+       <thead><tr><th>#</th><th class="l">Date</th><th>Age</th><th class="g">New APR</th><th>Interest</th><th>Principal</th><th>Max mo. withdrawal</th><th>IRA balance</th><th>Over / under</th><th class="y">Amount withdrawn</th></tr></thead>
+       <tbody></tbody>
+     </table></div>
+   </details>
+ </section>
+</main>
+
+<footer class="foot">
+  <p>Built from the “How Long Will Your Money Last?” spreadsheet. The sheet runs up to 30 years and is set up so the maximum withdrawal leaves a zero balance at the end. Your return is not guaranteed; this is a planning tool, not advice.</p>
+  <p id="offline-state" class="small"></p>
+</footer>
+
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
